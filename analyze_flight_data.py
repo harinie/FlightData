@@ -114,12 +114,12 @@ weights = clf_base.coef_
 weights = np.reshape(weights,[weights.shape[1]])
 weights_pos = np.where(weights>0.5*max(weights))[0]
 
-plt.subplot(1,2,1)
-barlist=plt.bar(range(weights_pos.shape[0]),weights[weights_pos],color='b',alpha=0.3)
+plt.subplot(2,1,1)
+barlist=plt.barh(range(weights_pos.shape[0]),weights[weights_pos],color='b',alpha=0.3)
 
 high_keys = [all_keys[idx] for idx in weights_pos]
     
-plt.xticks(range(weights_pos.shape[0]), high_keys, rotation=90,fontsize=14)
+plt.yticks(range(weights_pos.shape[0]), high_keys,fontsize=14)
 
 #plt.axes().set_aspect(10)
 # Pad margins so that markers don't get clipped by the axes
@@ -127,17 +127,16 @@ plt.margins(0.05)
 # Tweak spacing to prevent clipping of tick-labels
 plt.subplots_adjust(bottom=0.5)
 
-plt.ylabel('Classifier Weight',fontsize=18)
 plt.title('Factors that cause flight cancellation, LGA-ORD',fontsize=18)
 
 weights_neg = np.where(weights<0.5*min(weights))[0]
 
-plt.subplot(1,2,2)
-barlist=plt.bar(range(weights_neg.shape[0]),np.abs(weights[weights_neg]),color='b',alpha=0.3)
+plt.subplot(2,1,2)
+barlist=plt.barh(range(weights_neg.shape[0]),np.abs(weights[weights_neg]),color='b',alpha=0.3)
 
 high_keys_neg = [all_keys[idx] for idx in weights_neg]
     
-plt.xticks(range(weights_neg.shape[0]), high_keys_neg, rotation=90,fontsize=14)
+plt.yticks(range(weights_neg.shape[0]), high_keys_neg,fontsize=14)
 
 #plt.axes().set_aspect(10)
 # Pad margins so that markers don't get clipped by the axes
@@ -145,7 +144,7 @@ plt.margins(0.05)
 # Tweak spacing to prevent clipping of tick-labels
 plt.subplots_adjust(bottom=0.5)
 
-plt.ylabel('Classifier Weight',fontsize=18)
+plt.xlabel('Classifier Weight',fontsize=18)
 plt.title('Factors that keep flights from getting cancelled, LGA-ORD',fontsize=18)
 
 plt.show()            
@@ -170,6 +169,7 @@ for params, mean_score, scores in clf.grid_scores_:
     print("%0.3f (+/-%0.03f) for %r"% (mean_score, scores.std() / 2, params))     
 
 clf.best_estimator_.fit(all_features,delay_vals)
+delay_vals_predict=clf.best_estimator_.predict(all_features)
 
 #%%
 weights=None
@@ -178,30 +178,28 @@ weights = clf.best_estimator_.coef_
 weights = np.reshape(weights,[weights.shape[1]])
 weights_pos = np.where(weights>0.5*max(weights))[0]
 
-plt.subplot(1,2,1)
-barlist=plt.bar(range(weights_pos.shape[0]),weights[weights_pos],color='b',alpha=0.3)
+plt.subplot(2,1,1)
+barlist=plt.barh(range(weights_pos.shape[0]),weights[weights_pos],color='b',alpha=0.3)
 
 high_keys = [all_keys[idx] for idx in weights_pos]
     
-plt.xticks(range(weights_pos.shape[0]), high_keys, rotation=90,fontsize=14)
+plt.yticks(range(weights_pos.shape[0]), high_keys, fontsize=14)
 
 #plt.axes().set_aspect(10)
 # Pad margins so that markers don't get clipped by the axes
 plt.margins(0.1)
 # Tweak spacing to prevent clipping of tick-labels
 plt.subplots_adjust(bottom=0.5)
-
-plt.ylabel('Regression Weight',fontsize=18)
 plt.title('Factors that cause flight delays, LGA-ORD',fontsize=18)
 
 weights_neg = np.where(weights<0.5*min(weights))[0]
 
-plt.subplot(1,2,2)
-barlist=plt.bar(range(weights_neg.shape[0]),np.abs(weights[weights_neg]),color='b',alpha=0.3)
+plt.subplot(2,1,2)
+barlist=plt.barh(range(weights_neg.shape[0]),np.abs(weights[weights_neg]),color='b',alpha=0.3)
 
 high_keys_neg = [all_keys[idx] for idx in weights_neg]
     
-plt.xticks(range(weights_neg.shape[0]), high_keys_neg, rotation=90,fontsize=14)
+plt.yticks(range(weights_neg.shape[0]), high_keys_neg, fontsize=14)
 
 #plt.axes().set_aspect(10)
 # Pad margins so that markers don't get clipped by the axes
@@ -209,7 +207,7 @@ plt.margins(0.1)
 # Tweak spacing to prevent clipping of tick-labels
 plt.subplots_adjust(bottom=0.5)
 
-plt.ylabel('Regression Weight',fontsize=18)
+plt.xlabel('Regression Weight',fontsize=18)
 plt.title('Factors that keep flights from getting delayed, LGA-ORD',fontsize=18)
 
 plt.show()            
